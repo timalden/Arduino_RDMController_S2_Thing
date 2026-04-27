@@ -203,6 +203,7 @@ void cmdLabelSet(const String &label) {
   }
   rdm_uid_t dest = activeUID();
   rdm_ack_t ack;
+  size_t len = strnlen(label.c_str(), RDM_MFR_LABEL_SIZE);
   if (rdm_send_set_mfr_label(dmxPort, &dest, subDev(), label.c_str(), &ack)) {
     Serial.printf("Label set to: \"%s\"\n", label.c_str());
   } else {
