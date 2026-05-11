@@ -56,19 +56,20 @@ uint8_t dmxBuffer[DMX_PACKET_SIZE] = {0};  // all channels start at zero
 // ============================================================
 // Curve helpers — match S3HW naming exactly
 // ============================================================
-const char *curveNames[4] = { "sq", "log", "lin", "tmp" };
-const char *curveFullNames[4] = { "square law", "logarithmic", "linear", "Tempus analogue" };
+const char *curveNames[5] = { "sq", "log", "lin", "tmp", "pow" };
+const char *curveFullNames[5] = { "square law", "logarithmic", "linear", "Tempus analogue", "power law" };
 
 int parseCurveName(const String &s) {
   if (s == "sq")  return 0;
   if (s == "log") return 1;
   if (s == "lin") return 2;
   if (s == "tmp") return 3;
+  if (s == "pow") return 4;
   return -1;
 }
 
 const char *curveName(uint8_t id) {
-  return (id < 4) ? curveFullNames[id] : "?";
+  return (id < 5) ? curveFullNames[id] : "?";
 }
 
 // ============================================================
@@ -423,14 +424,14 @@ void parseCommand(String cmd) {
       if (ch >= 0 && ch < NUM_CHANNELS && cid >= 0) {
         cmdCurveSetChannel(ch, cid);
       } else {
-        Serial.println("Usage: curve <ch 1-6> sq/log/lin/tmp");
+        Serial.println("Usage: curve <ch 1-6> sq/log/lin/tmp/pow");
       }
     } else {
       int cid = parseCurveName(arg);
       if (cid >= 0) {
         cmdCurveSetAll(cid);
       } else {
-        Serial.println("Curve: sq, log, lin, tmp");
+        Serial.println("Curve: sq, log, lin, tmp, pow");
       }
     }
 
